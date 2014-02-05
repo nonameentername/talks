@@ -12,11 +12,6 @@
 
 ---
 
-# PyTexas
-![pyTexas](images/pyTexas-logo.png)
-
----
-
 # Problem description
 - Internal product consumers need to test multiple versions of the Rackspace's
   Cloud Identity API
