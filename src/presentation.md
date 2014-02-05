@@ -153,6 +153,12 @@ bottle service:
 ---
 
 # Architecture of Docker solution
+
+![system](images/system.png)
+
+---
+
+# Architecture of Docker solution
     !python
     @get('/IDaaS/versions')
     @get('/IDaaS/versions/<version>')
@@ -238,5 +244,5 @@ Recover from node failure: spin up new nodes and assign same ip (Open vSwitch)
 ---
 
 # QA
-Questions?
+![questions](images/questions.png)
 
