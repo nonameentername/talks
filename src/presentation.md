@@ -1,0 +1,199 @@
+# About me
+    Werner Mendizabal
+    Rackspace - Cloud Identity (keystone)
+
+    https://github.com/nonameentername
+    werner.mendizabal@gmail.com
+![rackspace](images/rackspace-logo.png)
+
+---
+
+# Dockerfy your CI/CD
+
+---
+
+# PyTexas
+![pyTexas](images/pyTexas-logo.png)
+
+---
+
+# Problem description
+- QE needs to test multiple versions of the api
+- Limited hardware resources
+- Difficult for QE to switch between different versions of the api
+
+---
+
+# What is docker?
+![docker](images/docker-logo.png)
+
+---
+
+# What is docker?
+![docker](images/docker-filesystems.png)
+
+---
+
+# Dockerfile
+    !bash
+    # nexus
+    #
+    # VERSION               1.0.0
+    FROM ubuntu:12.04
+    MAINTAINER Werner R. Mendizabal "werner.mendizabal@gmail.com"
+
+    RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" \
+    > /etc/apt/sources.list
+    RUN apt-get update
+    RUN apt-get install -y openjdk-7-jre-headless
+    WORKDIR /usr/local
+    RUN wget http://www.sonatype.org/downloads/nexus-latest-bundle.tar.gz
+    RUN tar zxvf nexus-latest-bundle.tar.gz
+    RUN mv /usr/local/nexus-2.7.0-05 /usr/local/nexus
+    WORKDIR /usr/local/nexus
+    EXPOSE 8081
+    VOLUME ["/usr/local/sonatype-work/nexus/storage"]
+    CMD RUN_AS_USER=root ./bin/nexus start && tail -f logs/wrapper.log
+
+---
+
+# Application Package
+
+![diagram](images/diagram.png)
+
+---
+
+# Cloud Identity application
+Application is self contained
+
+each git revision contains:
+
+- application code
+- application config files
+- database schema and config
+- required database data
+
+---
+
+# Docker images
+Images stored private docker registry:
+
+- application-base-image
+- backend-base-image
+- nexus
+- riak
+
+Images built on demand:
+
+- application
+- backend
+
+---
+
+# Docker images
+
+Dockerfile
+
+    !bash
+    # backend-base-image
+    #
+    # VERSION               1.0.0
+    FROM ubuntu:12.04
+
+    RUN install.sh
+    VOLUME ["/schema", "/data"]
+
+Dockerfile
+
+    !bash
+    # backend
+    #
+    # VERSION               1.0.0
+    FROM backend-base-image
+
+    ADD /schema /schema
+    ADD /data /data
+
+---
+
+# Docker images
+
+Dockerfile
+
+    !bash
+    # application-base-image
+    #
+    # VERSION               1.0.0
+    FROM ubuntu:12.04
+
+    RUN install.sh
+    VOLUME ["/config", "/war"]
+
+Dockerfile
+
+    !bash
+    # application
+    #
+    # VERSION               1.0.0
+    FROM application-base-image
+
+    ADD /config /config
+    ADD /war /war
+
+---
+
+# Architecture of Docker solution
+bottle service:
+
+- docker-py
+- riak
+- angularjs
+- command line client
+
+---
+
+# Architecture of Docker solution
+    !python
+    @get('/IDaaS/versions')
+    @get('/IDaaS/versions/<version>')
+    @post('/IDaaS/apps')
+    @get('/IDaaS/apps')
+    @get('/IDaaS/apps/<application_id>')
+    @get('/IDaaS/hosts/<host_id>/log')
+    @delete('/IDaaS/apps/<application_id>')
+    @get('/')
+    @get('/static/<path:path>')
+
+---
+
+# Identity CI/CD pipeline
+    for github repository
+    create a new branch
+    submit pull request
+    jenkins job started via github hook
+    jenkins creates new artifact nexus
+    jenkins creates new docker instance of the database using nexus artifact
+    jenkins runs test
+    jenkins notifies github on success or failure of the job
+    merge back into master
+    jenkins merge job
+
+---
+
+# Demo
+docker time
+
+---
+
+# Future Improvements
+Run service on a cluster of nodes (Apache Mesos?)
+
+Allow more complex deployments
+
+Recover from node failure: spin up new nodes and assign same ip (Open vSwitch)
+
+---
+
+# QA
+Questions?
+
