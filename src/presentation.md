@@ -22,6 +22,8 @@
   Cloud Identity API
 - Limited hardware resources
 - Difficult for consumers to switch between different versions of the API
+- Flexibility create/destroy
+- Consistency
 
 ---
 
@@ -83,7 +85,7 @@ each git revision contains:
 ---
 
 # Docker images
-Images stored private docker registry:
+Images stored in a private docker registry:
 
 - application-base-image
 - backend-base-image
