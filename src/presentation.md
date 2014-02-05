@@ -166,6 +166,45 @@ bottle service:
 
 ---
 
+# Architecture of Docker solution
+    !python
+    from docker import Client
+
+    def get_riak_ip():
+        docker = Client()
+        for container in docker.containers():
+            container_id = container['Id']
+            info = docker.inspect_container(container_id)
+            if info['Config']['Image'] == 'riak':
+                return info['NetworkSettings']['IPAddress']
+        return riak_instance['ip']
+
+---
+
+# Architecture of Docker solution
+    !python
+    from riak import RiakClient
+
+    def create_instance(version, tag):
+        riak = RiakClient(host=get_riak_ip())
+        apps = riak.bucket('apps')
+
+        data = {
+            'version': version,
+            'tag': tag
+        }
+
+        application = apps.new(data=json.dumps(data))
+        application.store()
+
+        response = docker.create_container("application")
+        docker.start(response)
+
+        info = docker.inspect_container(response)
+        return info['Name']
+
+---
+
 # Identity CI/CD pipeline
     for github repository
     create a new branch
@@ -181,7 +220,9 @@ bottle service:
 ---
 
 # Demo
-docker time
+Docker time
+
+![golang](images/gopher.png)
 
 ---
 
@@ -191,6 +232,8 @@ Run service on a cluster of nodes (Apache Mesos?)
 Allow more complex deployments
 
 Recover from node failure: spin up new nodes and assign same ip (Open vSwitch)
+
+![mesos](images/mesos.png)
 
 ---
 
