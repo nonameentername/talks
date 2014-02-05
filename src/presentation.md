@@ -18,18 +18,25 @@
 ---
 
 # Problem description
-- QE needs to test multiple versions of the api
+- Internal product consumers need to test multiple versions of the Rackspace's
+  Cloud Identity API
 - Limited hardware resources
-- Difficult for QE to switch between different versions of the api
+- Difficult for consumers to switch between different versions of the API
 
 ---
 
 # What is docker?
 ![docker](images/docker-logo.png)
 
+- Docker: The Linux Container Engine
+
+  Docker is an open-source project to easily create lightweight, portable, self-sufficient
+  containers from any application. The same container that a developer builds and tests on 
+  a laptop can run at scale, in production, on VMs, bare metal, OpenStack clusters, public
+  clouds and more. 
 ---
 
-# What is docker?
+# Docker Architecture
 ![docker](images/docker-filesystems.png)
 
 ---
