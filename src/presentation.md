@@ -1,3 +1,7 @@
+# Dockerfy your CI/CD
+
+---
+
 # About me
     Werner Mendizabal
     Rackspace - Cloud Identity (keystone)
@@ -5,10 +9,6 @@
     https://github.com/nonameentername
     werner.mendizabal@gmail.com
 ![rackspace](images/rackspace-logo.png)
-
----
-
-# Dockerfy your CI/CD
 
 ---
 
